@@ -121,7 +121,7 @@ app.post("/account/signin", async (req, res) => {
     let userExists = await user.findOne({ email: email });
     if (userExists) {
       if (userExists.password === password) {
-        const token = jwt.sign({ userId: userExists._id, username: userExists.name }, SECRET_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: userExists._id, username: userExists.name }, SECRET_KEY, { expiresIn: '1m' });
         res.status(200).json( {id:userExists._id,name:userExists.name,token}
          );
       } else {
@@ -152,3 +152,12 @@ app.post("/account/signup", async (req, res) => {
 app.get('/protected', verifyJWT, (req, res) => {
   res.json({ message: req.user });
 });
+
+
+app.get('/token',verifyJWT,(req,res)=>{
+  if(req.user){
+    res.status(200).json({...req.user})
+  }else{
+    res.status(201).json({message:"login failed"})
+  }
+})

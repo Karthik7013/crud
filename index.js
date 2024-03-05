@@ -158,10 +158,6 @@ app.post("/account/signup", async (req, res) => {
   }
 });
 
-app.get("/protected", verifyJWT, (req, res) => {
-  res.json({ message: req.user });
-});
-
 app.get("/token", verifyJWT, (req, res) => {
   if (req.user) {
     res.status(200).json({ ...req.user });
